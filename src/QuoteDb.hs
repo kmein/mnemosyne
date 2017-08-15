@@ -14,6 +14,7 @@ import qualified Data.Text as T
 import qualified Data.Text.Encoding as T
 import qualified Data.Text.IO as T
 import Data.Text.Prettyprint.Doc
+import Data.Text.Prettyprint.Doc.Util
 import Data.Text.Prettyprint.Doc.Render.Text
 import Data.Text.Read (decimal)
 import GHC.Generics (Generic)
@@ -36,6 +37,7 @@ textLocToString loc =
     LineF x -> show x ++ "f"
     LineFF x -> show x ++ "ff"
     LineRange x y -> show x ++ "-" ++ show y
+    Page n x -> show n ++ ":" ++ textLocToString x
 
 instance FromRecord Quote where
   parseRecord v
@@ -52,8 +54,8 @@ instance Pretty TextLoc where
 
 instance Pretty Quote where
   pretty (Quote a s l q) =
-    guil (vcat (map pretty q)) <> hardline <>
-    indent 2 (parens $ pretty a <> colon <+> pretty s <> loc)
+    vcat (map reflow q) <> hardline <>
+    indent 2 (parens $ reflow a <> colon <+> reflow s <> loc)
     where
       guil = enclose "»" "«"
       loc =
@@ -67,6 +69,7 @@ data TextLoc
   | LineFF Int
   | LineRange Int
               Int
+  | Page Int TextLoc
   deriving (Show)
 
 instance FromField TextLoc where
@@ -78,10 +81,15 @@ instance FromField TextLoc where
           "f" -> return $ LineF num
           "ff" -> return $ LineFF num
           "" -> return $ Line num
-          _
-            | Just ('-', endt) <- T.uncons rest
-            , Right (end, _) <- decimal endt -> return $ LineRange num end
-            | otherwise -> mzero
+          _ ->
+            case T.uncons rest of
+              Just ('-', e)
+                | Right (end, _) <- decimal e -> return $ LineRange num end
+              Just (':', l)
+                | Right lin <-
+                   runParser (parseField (T.encodeUtf8 l) :: Parser TextLoc) ->
+                  return $ Page num lin
+              _ -> mzero
 
 instance ToField TextLoc where
   toField = strBs . textLocToString
@@ -94,4 +102,4 @@ fileToQuotes f = do
     Right v -> return $ toList v
 
 prettyQuotes :: [Quote] -> IO ()
-prettyQuotes = putDoc . vcat . intersperse line . map pretty
+prettyQuotes = putDocW 80 . vcat . intersperse line . map pretty
