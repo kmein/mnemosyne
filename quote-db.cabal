@@ -1,14 +1,13 @@
 name:                quote-db
 version:             0.1.0.0
--- synopsis:
--- description:
+synopsis:            A tool for managing a database of literature quotes
 homepage:            https://github.com/kmein/quote-db#readme
 license:             BSD3
 license-file:        LICENSE
 author:              Kierán Meinhardt
 maintainer:          kieran.meinhardt@gmail.com
 copyright:           Copyright (c) 2017 Kierán Meinhardt
-category:            Web
+category:            Text
 build-type:          Simple
 extra-source-files:  README.md
 cabal-version:       >=1.10
@@ -16,9 +15,16 @@ cabal-version:       >=1.10
 library
   hs-source-dirs:      src
   exposed-modules:     QuoteDb
+                     , QuoteDb.Csv
+                     , QuoteDb.LaTeX
+                     , QuoteDb.Pretty
+                     , QuoteDb.Type
+  ghc-options:         -Wall -Werror -Wunused-imports
   build-depends:       base >= 4.7 && < 5
+                     , HaTeX
                      , bytestring
                      , cassava
+                     , megaparsec
                      , prettyprinter
                      , text
   default-language:    Haskell2010
@@ -26,9 +32,11 @@ library
 executable quote-db-exe
   hs-source-dirs:      app
   main-is:             Main.hs
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -Wall -Werror -Wunused-imports
   build-depends:       base
                      , quote-db
+                     , optparse-applicative
+                     , text
   default-language:    Haskell2010
 
 test-suite quote-db-test
@@ -37,7 +45,7 @@ test-suite quote-db-test
   main-is:             Spec.hs
   build-depends:       base
                      , quote-db
-  ghc-options:         -threaded -rtsopts -with-rtsopts=-N
+  ghc-options:         -Wall -Werror -Wunused-imports
   default-language:    Haskell2010
 
 source-repository head
