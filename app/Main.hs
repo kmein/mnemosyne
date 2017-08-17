@@ -1,5 +1,8 @@
 {-# LANGUAGE OverloadedStrings #-}
-module Main where
+
+module Main
+  ( main
+  ) where
 
 import QuoteDb
 
@@ -13,11 +16,10 @@ data QuoteOutputType
     | LaTeX
      deriving (Show)
 
-data QuoteDbOptions = QuoteDbOptions
-    { dbFile :: FilePath
-    -- action: search, add, export
-    , outputType :: QuoteOutputType
-    } deriving (Show)
+data QuoteDbOptions =
+    QuoteDbOptions FilePath
+                   QuoteOutputType
+     deriving (Show)
 
 quoteDbOptions :: Parser QuoteDbOptions
 quoteDbOptions = QuoteDbOptions <$> quoteDbFile <*> quoteOutputType

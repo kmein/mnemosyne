@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module QuoteDb.Csv (fileToQuotes) where
+
+module QuoteDb.Csv
+  ( fileToQuotes
+  ) where
 
 import QuoteDb.Type
 

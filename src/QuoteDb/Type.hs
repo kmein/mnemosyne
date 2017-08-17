@@ -21,6 +21,12 @@ data Quote = Quote
     , quote :: [Text] -- lines
     } deriving (Generic, Show)
 
+instance Eq Quote where
+    Quote a1 s1 l1 _ == Quote a2 s2 l2 _ = a1 == a2 && s1 == s2 && l1 == l2
+
+instance Ord Quote where
+    Quote a1 s1 l1 _ <= Quote a2 s2 l2 _ = a1 <= a2 && s1 <= s2 && l1 <= l2
+
 data TextLoc
     = Line Natural
     | LineF Natural
@@ -29,7 +35,18 @@ data TextLoc
                 Natural
     | Page Natural
            TextLoc
-     deriving (Show)
+     deriving (Show, Eq)
+
+instance Ord TextLoc where
+    loc1 <= loc2 = firstLine loc1 <= firstLine loc2
+      where
+        firstLine l =
+            case l of
+                Line x -> Just x
+                LineF x -> Just x
+                LineFF x -> Just x
+                LineRange x _ -> Just x
+                Page _ _ -> Nothing
 
 displayTextLoc :: TextLoc -> String
 displayTextLoc loc =

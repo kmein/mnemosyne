@@ -1,6 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module QuoteDb.Pretty (prettyQuote) where
+
+module QuoteDb.Pretty
+  ( prettyQuote
+  ) where
 
 import QuoteDb.Type
 
@@ -19,4 +22,10 @@ instance Pretty Quote where
            indent 2 (parens $ reflow a <> colon <+> reflow s <> loc)
 
 prettyQuote :: Quote -> Text
-prettyQuote = renderStrict . layoutPretty defaultLayoutOptions . pretty
+prettyQuote =
+    renderStrict .
+    layoutPretty
+        defaultLayoutOptions
+        { layoutPageWidth = AvailablePerLine 100 0.8
+        } .
+    pretty
