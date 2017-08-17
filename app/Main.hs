@@ -36,9 +36,10 @@ main :: IO ()
 main = do
     QuoteDbOptions f ot <- execParser quoteDbOptions'
     quotes <- fileToQuotes f
-    case ot of
-      Plain -> renderWith prettyQuote quotes
-      LaTeX -> renderWith laTeXQuote quotes
+    Text.putStrLn $
+        case ot of
+            Plain -> renderWith prettyQuote quotes
+            LaTeX -> mkStandalone $ renderWith laTeXQuote quotes
   where
     quoteDbOptions' = info (quoteDbOptions <**> helper) fullDesc
-    renderWith r = Text.putStrLn . Text.intercalate "\n\n" . map r
+    renderWith r = Text.intercalate "\n\n" . map r

@@ -1,12 +1,17 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module QuoteDb.LaTeX (laTeXQuote) where
+
+module QuoteDb.LaTeX
+  ( laTeXQuote
+  , mkStandalone
+  ) where
 
 import QuoteDb.Type hiding (quote)
 
 import Data.List (intersperse)
 import Numeric.Natural
 import Text.LaTeX
+import Text.LaTeX.Base.Class (comm0, comm1)
 
 instance Texy Natural where
     texy = texy . (fromIntegral :: Natural -> Int)
@@ -18,7 +23,8 @@ instance Texy Quote where
             sourceL = texy s
             locationL = maybe mempty ((", " <>) . texy) l
         in quote $
-           joinLines quoteL <> hfill <>
+           joinLines quoteL <> newline <>
+           hspace_ (CustomMeasure (comm0 "fill")) <>
            parens (authorL <> ": " <> sourceL <> locationL)
       where
         joinLines = mconcat . intersperse newline
@@ -40,3 +46,13 @@ instance Texy TextLoc where
 
 laTeXQuote :: Quote -> Text
 laTeXQuote = render . (texy :: Quote -> LaTeX)
+
+mkStandalone :: Text -> Text
+mkStandalone x = render hd <> x <> render ft
+  where
+    hd =
+        documentclass [] "article" <> usepackage [] "libertine" <>
+        comm1 "begin" doc
+    ft = comm1 "end" doc
+    doc = texy ("document" :: Text) :: LaTeX
+
