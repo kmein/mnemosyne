@@ -25,7 +25,10 @@ instance Eq Quote where
     Quote a1 s1 l1 _ == Quote a2 s2 l2 _ = a1 == a2 && s1 == s2 && l1 == l2
 
 instance Ord Quote where
-    Quote a1 s1 l1 _ <= Quote a2 s2 l2 _ = a1 <= a2 && s1 <= s2 && l1 <= l2
+    Quote a1 s1 l1 _ <= Quote a2 s2 l2 _
+        | a1 == a2 = s1 <= s2
+        | s1 == s2 = l1 <= l2
+        | otherwise = a1 <= a2
 
 data TextLoc
     = Line Natural
