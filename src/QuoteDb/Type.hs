@@ -41,6 +41,9 @@ data TextLoc
      deriving (Show, Eq)
 
 instance Ord TextLoc where
+    Page n l1 <= Page m l2
+        | n == m = l1 <= l2
+        | otherwise = n <= m
     loc1 <= loc2 = firstLine loc1 <= firstLine loc2
       where
         firstLine l =

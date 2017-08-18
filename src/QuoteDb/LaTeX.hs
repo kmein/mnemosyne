@@ -25,7 +25,7 @@ instance Texy Quote where
         in quote $
            joinLines quoteL <> newline <>
            hspace_ (CustomMeasure (comm0 "fill")) <>
-           parens (authorL <> ": " <> sourceL <> locationL)
+           parens (authorL <> ": " <> textit sourceL <> locationL)
       where
         joinLines = mconcat . intersperse newline
         parens x = between x (texy ("(" :: Text)) (texy (")" :: Text))
