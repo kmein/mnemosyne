@@ -32,8 +32,8 @@ Shakespeare,Romeo and Juliet,1:4:51-53,"I dream'd a dream to-night.—And so did
 
 from which the plain text frontend generates the following output:
 
-```
-% stack exec quote-db-exe -- -f [PATH] --plain -q 'a dream to-night'
+```shell
+$ stack exec quote-db-exe -- -f [PATH] --plain -q 'a dream to-night'
 I dream'd a dream to-night.—And so did I.—
 Well, what was yours?—That dreamers often lie.—
 In bed asleep, while they do dream things true.
@@ -42,8 +42,7 @@ In bed asleep, while they do dream things true.
 
 and the LaTeX frontend produces this output:
 
-```
-% stack exec quote-db-exe -- -f [PATH] --latex -q 'a dream to-night'
+```latex
 \documentclass{article}
 \usepackage{libertine}
 \begin{document}
