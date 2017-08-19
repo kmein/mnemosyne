@@ -23,26 +23,29 @@ instance Texy Quote where
             sourceL = texy s
             locationL = maybe mempty ((", " <>) . texy) l
         in quote $
-           joinLines quoteL <> newline <>
-           hspace_ (CustomMeasure (comm0 "fill")) <>
-           parens (authorL <> ": " <> textit sourceL <> locationL)
+           mconcat
+               [ joinLines quoteL
+               , rightAlign
+               , parens $ mconcat [authorL, ": ", textit sourceL, locationL]]
       where
         joinLines = mconcat . intersperse newline
         parens x = between x (texy ("(" :: Text)) (texy (")" :: Text))
+        rightAlign = newline <> hspace_ (CustomMeasure (comm0 "fill"))
 
 
 instance Texy TextLoc where
     texy loc =
-        let following = "f." :: Text
-            ffollowing = "ff." :: Text
-            endash = "--" :: Text
-            comma = "," :: Text
-        in case loc of
-               Line x -> texy x
-               LineF x -> texy x <> texy following
-               LineFF x -> texy x <> texy ffollowing
-               LineRange x y -> texy x <> texy endash <> texy y
-               Page x l -> texy x <> texy comma <> texy l
+        case loc of
+            Line x -> texy x
+            LineF x -> texy x <> texy following
+            LineFF x -> texy x <> texy ffollowing
+            LineRange x y -> texy x <> texy endash <> texy y
+            Page x l -> texy x <> texy comma <> texy l
+      where
+        following = "f." :: Text
+        ffollowing = "ff." :: Text
+        endash = "--" :: Text
+        comma = "," :: Text
 
 laTeXQuote :: Quote -> Text
 laTeXQuote = render . (texy :: Quote -> LaTeX)
@@ -51,8 +54,10 @@ mkStandalone :: Text -> Text
 mkStandalone x = render hd <> x <> render ft
   where
     hd =
-        documentclass [] "article" <> usepackage [] "libertine" <>
-        comm1 "begin" doc
+        mconcat
+            [ documentclass [] "article"
+            , usepackage [] "libertine"
+            , comm1 "begin" doc]
     ft = comm1 "end" doc
     doc = texy ("document" :: Text) :: LaTeX
 

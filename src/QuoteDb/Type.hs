@@ -11,8 +11,8 @@ module QuoteDb.Type
 import Data.Text (Text)
 import GHC.Generics (Generic)
 import Text.Megaparsec
-import Text.Megaparsec.Lexer
-import Numeric.Natural
+import Text.Megaparsec.Lexer (integer)
+import Numeric.Natural (Natural)
 
 data Quote = Quote
     { author :: Text
@@ -25,10 +25,11 @@ instance Eq Quote where
     Quote a1 s1 l1 _ == Quote a2 s2 l2 _ = a1 == a2 && s1 == s2 && l1 == l2
 
 instance Ord Quote where
-    Quote a1 s1 l1 _ <= Quote a2 s2 l2 _
-        | a1 == a2 = s1 <= s2
-        | s1 == s2 = l1 <= l2
-        | otherwise = a1 <= a2
+    Quote a1 s1 l1 _ `compare` Quote a2 s2 l2 _
+        | a1 /= a2 = compare a1 a2
+        | s1 /= s2 = compare s1 s2
+        | l1 /= l2 = compare l1 l2
+        | otherwise = EQ
 
 data TextLoc
     = Line Natural
@@ -41,10 +42,10 @@ data TextLoc
      deriving (Show, Eq)
 
 instance Ord TextLoc where
-    Page n l1 <= Page m l2
-        | n == m = l1 <= l2
-        | otherwise = n <= m
-    loc1 <= loc2 = firstLine loc1 <= firstLine loc2
+    Page n l1 `compare` Page m l2
+        | n == m = l1 `compare` l2
+        | otherwise = n `compare` m
+    loc1 `compare` loc2 = firstLine loc1 `compare` firstLine loc2
       where
         firstLine l =
             case l of
