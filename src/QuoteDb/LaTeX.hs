@@ -9,6 +9,7 @@ module QuoteDb.LaTeX
 import QuoteDb.Type hiding (quote)
 
 import Data.List (intersperse)
+import Data.Maybe (fromMaybe)
 import Numeric.Natural
 import Text.LaTeX
 import Text.LaTeX.Base.Class (comm0, comm1)
@@ -50,13 +51,14 @@ instance Texy TextLoc where
 laTeXQuote :: Quote -> Text
 laTeXQuote = render . (texy :: Quote -> LaTeX)
 
-mkStandalone :: Text -> Text
-mkStandalone x = render hd <> x <> render ft
+mkStandalone :: Maybe Font -> Text -> Text
+mkStandalone font x = render hd <> x <> render ft
   where
     hd =
         mconcat
             [ documentclass [] "article"
-            , usepackage [] "libertine"
+            , usepackage [] "fontspec"
+            , comm1 "setmainfont" (texy $ fromMaybe "Linux Libertine O" font)
             , comm1 "begin" doc]
     ft = comm1 "end" doc
     doc = texy ("document" :: Text) :: LaTeX

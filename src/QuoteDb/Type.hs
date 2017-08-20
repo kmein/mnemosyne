@@ -4,6 +4,7 @@
 module QuoteDb.Type
   ( Quote(..)
   , TextLoc(..)
+  , Font
   , displayTextLoc
   , parseTextLoc
   ) where
@@ -13,6 +14,8 @@ import GHC.Generics (Generic)
 import Text.Megaparsec
 import Text.Megaparsec.Lexer (integer)
 import Numeric.Natural (Natural)
+
+type Font = Text
 
 data Quote = Quote
     { author :: Text

@@ -26,13 +26,14 @@ data QuoteComponent
 data QuoteDbOptions = QuoteDbOptions
     { _dbFile :: FilePath
     , _outputType :: QuoteOutputType
+    , _outputFont :: Maybe Font
     , _searchDomain :: Maybe [QuoteComponent]
     , _searchPattern :: Maybe Text.Text
     } deriving (Show)
 
 quoteDbOptions :: Parser QuoteDbOptions
 quoteDbOptions =
-    QuoteDbOptions <$> quoteDbFile <*> quoteOutputType <*> quoteSearchDomain <*>
+    QuoteDbOptions <$> quoteDbFile <*> quoteOutputType <*> quoteOutputFont <*> quoteSearchDomain <*>
     quoteSearchPattern
   where
     quoteDbFile =
@@ -50,10 +51,16 @@ quoteDbOptions =
     quoteSearchPattern =
         optional $
         Text.pack <$> strArgument (metavar "PATTERN" <> help "Search string")
+    quoteOutputFont =
+        optional $
+        Text.pack <$>
+        strOption
+            (long "font" <> metavar "FONTNAME" <>
+             help "The font to be used for LaTeX output")
 
 main :: IO ()
 main = do
-    QuoteDbOptions df ot sd sp <- execParser quoteDbOptions'
+    QuoteDbOptions df ot fo sd sp <- execParser quoteDbOptions'
     quotes <- fileToQuotes df
     let matching =
             case sp of
@@ -63,7 +70,7 @@ main = do
         flip id (sort matching) $
         case ot of
             Plain -> renderWith prettyQuote
-            LaTeX -> mkStandalone . renderWith laTeXQuote
+            LaTeX -> mkStandalone fo . renderWith laTeXQuote
   where
     quoteDbOptions' = info (quoteDbOptions <**> helper) fullDesc
     renderWith r = Text.intercalate "\n\n" . map r
