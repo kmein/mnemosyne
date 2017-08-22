@@ -69,11 +69,10 @@ main = do
     Text.putStrLn $
         flip id (sort matching) $
         case ot of
-            Plain -> renderWith prettyQuote
-            LaTeX -> mkStandalone fo . renderWith laTeXQuote
+            Plain -> Text.intercalate "\n\n" . map prettyQuote
+            LaTeX -> Text.pack . mkLaTeXDocument fo
   where
     quoteDbOptions' = info (quoteDbOptions <**> helper) fullDesc
-    renderWith r = Text.intercalate "\n\n" . map r
     searchQuotes dom pat =
         filter $
         \q -> any (Text.isInfixOf pat) $ concatMap (select q) $ sequence dom

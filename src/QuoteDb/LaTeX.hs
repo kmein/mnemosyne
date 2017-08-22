@@ -2,17 +2,21 @@
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module QuoteDb.LaTeX
-  ( laTeXQuote
-  , mkStandalone
-  ) where
+    ( mkLaTeXDocument
+    ) where
 
 import QuoteDb.Type hiding (quote)
 
-import Data.List (intersperse)
+import Data.Function (on)
+import Data.List (groupBy, intersperse)
 import Data.Maybe (fromMaybe)
-import Numeric.Natural
-import Text.LaTeX
+import Numeric.Natural (Natural)
+import Text.LaTeX hiding (author)
 import Text.LaTeX.Base.Class (comm0, comm1)
+import Text.LaTeX.Base.Pretty
+
+_DEFAULT_FONT_ :: Text
+_DEFAULT_FONT_ = "Linux Libertine O"
 
 instance Texy Natural where
     texy = texy . (fromIntegral :: Natural -> Int)
@@ -27,12 +31,12 @@ instance Texy Quote where
            mconcat
                [ joinLines quoteL
                , rightAlign
-               , parens $ mconcat [authorL, ": ", textit sourceL, locationL]]
+               , parens $ mconcat [authorL, ": ", textit sourceL, locationL]
+               ]
       where
         joinLines = mconcat . intersperse newline
         parens x = between x (texy ("(" :: Text)) (texy (")" :: Text))
         rightAlign = newline <> hspace_ (CustomMeasure (comm0 "fill"))
-
 
 instance Texy TextLoc where
     texy loc =
@@ -48,18 +52,26 @@ instance Texy TextLoc where
         endash = "--" :: Text
         comma = "," :: Text
 
-laTeXQuote :: Quote -> Text
-laTeXQuote = render . (texy :: Quote -> LaTeX)
+groupOn
+    :: (Eq b)
+    => (a -> b) -> [a] -> [[a]]
+groupOn f = groupBy ((==) `on` f)
 
-mkStandalone :: Maybe Font -> Text -> Text
-mkStandalone font x = render hd <> x <> render ft
+mkLaTeXDocument :: Maybe Font -> [Quote] -> String
+mkLaTeXDocument font qs =
+    prettyLaTeX $
+    mconcat
+        [ preamble
+        , document (tableofcontents <> foldMap mkSect (groupOn author qs)) :: LaTeX
+        ]
   where
-    hd =
+    mkSect quotes =
+        case quotes of
+            [] -> mempty
+            (q:_) -> section (texy $ author q) <> foldMap texy quotes
+    preamble =
         mconcat
             [ documentclass [] "article"
             , usepackage [] "fontspec"
-            , comm1 "setmainfont" (texy $ fromMaybe "Linux Libertine O" font)
-            , comm1 "begin" doc]
-    ft = comm1 "end" doc
-    doc = texy ("document" :: Text) :: LaTeX
-
+            , comm1 "setmainfont" (texy $ fromMaybe _DEFAULT_FONT_ font)
+            ]
