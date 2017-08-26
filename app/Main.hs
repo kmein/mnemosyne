@@ -9,7 +9,8 @@ import QuoteDb
 import Data.List (nub, sort)
 import Data.Monoid ((<>))
 import Options.Applicative
-import qualified Data.Text as Text (Text, intercalate, isInfixOf, pack)
+import qualified Data.Text as Text
+       (Text, cons, intercalate, isInfixOf, pack, replace)
 import qualified Data.Text.IO as Text (putStrLn)
 
 data QuoteOutputType
@@ -70,8 +71,9 @@ main = do
         flip id (sort matching) $
         case ot of
             Plain -> Text.intercalate "\n\n" . map prettyQuote
-            LaTeX -> Text.pack . mkLaTeXDocument fo
+            LaTeX -> wrap "\\section" . mkLaTeXDocument fo
   where
+    wrap at = Text.replace at ('\n' `Text.cons` at)
     quoteDbOptions' = info (quoteDbOptions <**> helper) fullDesc
     searchQuotes dom pat =
         filter $
