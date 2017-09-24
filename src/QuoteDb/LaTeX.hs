@@ -71,7 +71,8 @@ mkLaTeXDocument font qs =
                     _ -> mempty
     preamble =
         mconcat
-            [ documentclass [] "article"
+            [ documentclass [] "scrartcl"
             , usepackage [] "fontspec"
             , usepackage [] hyperref
-            , comm1 "setmainfont" (texy $ fromMaybe _DEFAULT_FONT_ font)]
+            , comm1 "setmainfont" (texy $ fromMaybe _DEFAULT_FONT_ font)
+            , comm1 "setsansfont" (texy $ fromMaybe _DEFAULT_FONT_ font)]
