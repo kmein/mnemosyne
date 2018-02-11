@@ -12,7 +12,7 @@ import Data.List (groupBy, intersperse)
 import Data.Maybe (fromMaybe)
 import Numeric.Natural (Natural)
 import Text.LaTeX hiding (author)
-import Text.LaTeX.Base.Class (comm0, comm1)
+import Text.LaTeX.Base.Class (comm1)
 import Text.LaTeX.Packages.Hyperref (hyperref)
 import qualified Data.Text as Text (pack, splitOn)
 
@@ -31,12 +31,9 @@ instance Texy Quote where
         in quote $
            mconcat
                [ joinLines quoteL
-               , rightAlign
-               , parens $ mconcat [authorL, ": ", textit sourceL, locationL]]
+               , comm1 "attrib" $ mconcat [authorL, ": ", textit sourceL, locationL]]
       where
         joinLines = mconcat . intersperse newline
-        parens x = between x (texy ("(" :: Text)) (texy (")" :: Text))
-        rightAlign = newline <> hspace_ (CustomMeasure (comm0 "fill"))
 
 instance Texy TextLoc where
     texy = texy . Text.pack . toText
@@ -73,6 +70,7 @@ mkLaTeXDocument font qs =
         mconcat
             [ documentclass [] "scrartcl"
             , usepackage [] "fontspec"
+            , usepackage [] "attrib"
             , usepackage [] hyperref
             , comm1 "setmainfont" (texy $ fromMaybe _DEFAULT_FONT_ font)
             , comm1 "setsansfont" (texy $ fromMaybe _DEFAULT_FONT_ font)]
