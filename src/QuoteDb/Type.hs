@@ -46,28 +46,20 @@ data TextLoc
            TextLoc
      deriving (Show, Eq)
 
+lineBounds :: TextLoc -> Maybe (Natural, Natural)
+lineBounds loc =
+    case loc of
+        Line x -> Just (x, x)
+        LineF x -> Just (x, x + 1)
+        LineFF x -> Just (x, x + 2)
+        LineRange x y -> Just (x, y)
+        Page _ _ -> Nothing
+
 instance Ord TextLoc where
     Page n l1 `compare` Page m l2
         | n == m = l1 `compare` l2
         | otherwise = n `compare` m
-    loc1 `compare` loc2 =
-        (firstLine loc1 `compare` firstLine loc2)
-        <> (lastLine loc1 `compare` lastLine loc2)
-      where
-        firstLine l =
-            case l of
-                Line x -> Just x
-                LineF x -> Just x
-                LineFF x -> Just x
-                LineRange x _ -> Just x
-                Page _ _ -> Nothing
-        lastLine l =
-            case l of
-                Line x -> Just x
-                LineF x -> Just (x + 1)
-                LineFF x -> Just (x + 2)
-                LineRange _ x -> Just x
-                Page _ _ -> Nothing
+    loc1 `compare` loc2 = lineBounds loc1 `compare` lineBounds loc2
 
 displayTextLoc :: TextLoc -> String
 displayTextLoc loc =
