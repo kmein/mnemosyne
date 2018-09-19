@@ -13,19 +13,16 @@ import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
 import Data.Text.Prettyprint.Doc.Util (reflow)
 
 instance Pretty TextLoc where
-    pretty = pretty . displayTextLoc
+  pretty = pretty . displayTextLoc
 
 instance Pretty Quote where
-    pretty (Quote a s l q) =
-        let loc = maybe mempty ((comma <+>) . pretty) l
-        in vcat (map reflow q) <> hardline <>
-           indent 2 (parens $ reflow a <> colon <+> reflow s <> loc)
+  pretty (Quote a s l q) =
+    let loc = maybe mempty ((comma <+>) . pretty) l
+     in vcat (map reflow q) <> hardline <>
+        indent 2 (parens $ reflow a <> colon <+> reflow s <> loc)
 
 prettyQuote :: Quote -> Text
 prettyQuote =
-    renderStrict .
-    layoutPretty
-        defaultLayoutOptions
-        { layoutPageWidth = AvailablePerLine 100 0.8
-        } .
-    pretty
+  renderStrict .
+  layoutPretty defaultLayoutOptions {layoutPageWidth = AvailablePerLine 100 0.8} .
+  pretty
