@@ -2,7 +2,7 @@ name:                quote-db
 version:             0.1.0.0
 synopsis:            A tool for managing a database of literature quotes
 homepage:            https://github.com/kmein/quote-db#readme
-license:             WTFPL
+license:             MIT
 license-file:        LICENSE
 author:              Kierán Meinhardt
 maintainer:          kieran.meinhardt@gmail.com
