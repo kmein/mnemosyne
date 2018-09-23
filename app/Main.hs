@@ -84,9 +84,9 @@ main = do
     quoteDbOptions' = info (quoteDbOptions <**> helper) fullDesc
     searchQuotes ss qs =
       foldl1 intersect $
-      map (\s -> filter (any (Text.isInfixOf (pattern s)) . select s) qs) ss
-    select search (Quote a s _ q) =
+      map (\s -> filter (matches s) qs) ss
+    matches search (Quote a s _ q) =
       case search of
-        SearchQuotes {} -> q
-        SearchSources {} -> [s]
-        SearchAuthors {} -> [a]
+        SearchQuotes pat -> any (Text.isInfixOf pat) q
+        SearchSources pat -> Text.isInfixOf pat s
+        SearchAuthors pat -> Text.isInfixOf pat a
