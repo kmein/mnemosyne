@@ -16,14 +16,17 @@ library
   hs-source-dirs:      src
   exposed-modules:     QuoteDb
                      , QuoteDb.Csv
+                     , QuoteDb.Html
                      , QuoteDb.LaTeX
-                     , QuoteDb.Pretty
+                     , QuoteDb.Plain
                      , QuoteDb.Type
+                     , QuoteDb.Util
   ghc-options:         -Wall -Werror -Wunused-imports
   build-depends:       base >= 4.7 && < 5
                      , HaTeX
                      , bytestring
                      , cassava
+                     , lucid
                      , megaparsec
                      , prettyprinter
                      , text

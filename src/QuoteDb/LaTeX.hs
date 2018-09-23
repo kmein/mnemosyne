@@ -6,9 +6,9 @@ module QuoteDb.LaTeX
   ) where
 
 import QuoteDb.Type hiding (quote)
+import QuoteDb.Util (groupOn)
 
-import Data.Function (on)
-import Data.List (groupBy, intersperse)
+import Data.List (intersperse)
 import Data.Maybe (fromMaybe)
 import qualified Data.Text as Text (pack, splitOn)
 import Numeric.Natural (Natural)
@@ -46,9 +46,6 @@ instance Texy TextLoc where
           LineFF x -> show x ++ "ff."
           LineRange x y -> show x ++ "--" ++ show y
           Page x l -> show x ++ "," ++ toText l
-
-groupOn :: (Eq b) => (a -> b) -> [a] -> [[a]]
-groupOn f = groupBy ((==) `on` f)
 
 mkLaTeXDocument :: Maybe Font -> [Quote] -> Text
 mkLaTeXDocument font qs =

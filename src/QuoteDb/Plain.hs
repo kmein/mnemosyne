@@ -1,7 +1,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module QuoteDb.Pretty
+module QuoteDb.Plain
   ( prettyQuote
   ) where
 
@@ -10,7 +10,6 @@ import QuoteDb.Type
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc
 import Data.Text.Prettyprint.Doc.Render.Text (renderStrict)
-import Data.Text.Prettyprint.Doc.Util (reflow)
 
 instance Pretty TextLoc where
   pretty = pretty . displayTextLoc
@@ -18,11 +17,11 @@ instance Pretty TextLoc where
 instance Pretty Quote where
   pretty (Quote a s l q) =
     let loc = maybe mempty ((comma <+>) . pretty) l
-     in vcat (map reflow q) <> hardline <>
-        indent 2 (parens $ reflow a <> colon <+> reflow s <> loc)
+     in vcat (map pretty q) <> hardline <>
+        indent 2 (parens $ pretty a <> colon <+> pretty s <> loc)
 
 prettyQuote :: Quote -> Text
 prettyQuote =
   renderStrict .
-  layoutPretty defaultLayoutOptions {layoutPageWidth = AvailablePerLine 100 0.8} .
+  layoutPretty defaultLayoutOptions .
   pretty

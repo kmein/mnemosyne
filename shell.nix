@@ -1,10 +1,7 @@
 { nixpkgs ? import <nixpkgs> {}, compiler ? "default", doBenchmark ? false }:
-
 let
-
   inherit (nixpkgs) pkgs;
-
-  f = { mkDerivation, base, bytestring, cassava, HaTeX, megaparsec
+  f = { mkDerivation, base, bytestring, cassava, HaTeX, lucid, megaparsec
       , optparse-applicative, prettyprinter, stdenv, text
       }:
       mkDerivation {
@@ -14,7 +11,7 @@ let
         isLibrary = true;
         isExecutable = true;
         libraryHaskellDepends = [
-          base bytestring cassava HaTeX megaparsec prettyprinter text
+          base bytestring cassava HaTeX lucid megaparsec prettyprinter text
         ];
         executableHaskellDepends = [ base optparse-applicative text ];
         testHaskellDepends = [ base ];
