@@ -27,7 +27,7 @@ instance FromRecord Quote where
   parseRecord v
     | length v == 4 =
       Quote <$> v .! 0 <*> v .! 1 <*> v .! 2 <*>
-      ((Text.splitOn " / " . Text.replace " // " " /  / ") <$> (v .! 3))
+      ((Text.splitOn " | " . Text.replace " || " " |  | ") <$> (v .! 3))
     | otherwise = mzero
 
 instance ToRecord Quote where
@@ -36,7 +36,7 @@ instance ToRecord Quote where
       [ toField a
       , toField s
       , toField l
-      , toField $ Text.replace " /  / " " // " $ Text.intercalate " / " q
+      , toField $ Text.replace " |  | " " || " $ Text.intercalate " | " q
       ]
 
 fileToQuotes :: FilePath -> IO [Quote]
