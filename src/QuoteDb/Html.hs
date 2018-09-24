@@ -23,12 +23,13 @@ instance ToHtml Quote where
       cite_ $ do
         span_ [class_ "author"] authorH
         span_ [class_ "source"] sourceH
-        span_ [class_ "location"] locationH
+        case l of
+          Just loc -> span_ [class_ "location"] $ toHtml loc
+          Nothing -> mempty
     where
       quoteH = map toHtml q
       authorH = toHtml $ head $ Text.splitOn "/" a
       sourceH = toHtml s
-      locationH = maybe mempty toHtml l
 
 instance ToHtml TextLoc where
   toHtmlRaw = toHtml
