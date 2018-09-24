@@ -53,7 +53,7 @@ lineBounds loc =
     LineF x -> Just (x, x + 1)
     LineFF x -> Just (x, x + 2)
     LineRange x y -> Just (x, y)
-    Page _ _ -> Nothing
+    Page x _ -> Just (x, x)
 
 instance Ord TextLoc where
   Page n l1 `compare` Page m l2
