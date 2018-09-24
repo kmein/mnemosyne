@@ -72,17 +72,4 @@ mkHtmlDocument' css qs = do
         _ -> return ()
 
 defaultCss :: Text.Text
-defaultCss =
-  "body { margin: auto; max-width: 700px; line-height: 1.5; background-color: #444; }\
-  \.author { font-style: normal; }\
-  \.author::before { content: \"— \"; color: grey; }\
-  \.author::after { content: \": \"; }\
-  \.location { font-style: normal; }\
-  \.location::before { content: \"  \"; }\
-  \article + article::before { content: \"* * *\"; color: grey; display: block; font-size: 1.5em; text-align: center; padding-top: 3%; padding-bottom: -5%; }\
-  \section { color: #444; background-color: white; text-align: justify; text-justify: inter-word; padding: 1% 5% 5% 5%; margin: 5%; -webkit-box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.375); -moz-box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.375); box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.375); }\
-  \section:hover { -webkit-box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.75); -moz-box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.75); box-shadow: 12px 12px 26px -9px rgba(0,0,0,0.75); }\
-  \h1 { text-align: center;}\
-  \h1::after, h1::before { content: \"—\"; padding: 0 8px; color: grey; }\
-  \h1 span.author-head { display: none; }\
-  \h1 span.translator-head::before { content: \"transl. \"; font-style: italic; color: grey; }"
+defaultCss = ".author,.location{font-style:normal}body{margin:auto;max-width:700px;line-height:1.5;background-color:#444}.author::before{content:\"— \";color:grey}.author::after{content:\": \"}.location::before{content:\"  \"}article+article::before{content:\"* * *\";color:grey;display:block;font-size:1.5em;text-align:center;padding-top:3%}section{color:#444;background-color:#fff;text-align:justify;text-justify:inter-word;padding:1% 5% 5%;margin:5%;-webkit-box-shadow:12px 12px 26px -9px rgba(0,0,0,.375);-moz-box-shadow:12px 12px 26px -9px rgba(0,0,0,.375);box-shadow:12px 12px 26px -9px rgba(0,0,0,.375)}section:hover{-webkit-box-shadow:12px 12px 26px -9px rgba(0,0,0,.75);-moz-box-shadow:12px 12px 26px -9px rgba(0,0,0,.75);box-shadow:12px 12px 26px -9px rgba(0,0,0,.75)}h1{text-align:center}h1::after,h1::before{content:\"—\";padding:0 8px;color:grey}h1 span.author-head{display:none}h1 span.translator-head::before{content:\"transl. \";font-style:italic;color:grey}"
