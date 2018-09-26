@@ -28,7 +28,7 @@ where the `location` parameter is optional and has the following syntax:
 A sample database entry looks like this:
 
 ```csv
-Shakespeare,Romeo and Juliet,1:4:51-53,"I dream'd a dream to-night.—And so did I.— / Well, what was yours?—That dreamers often lie.— / In bed asleep, while they do dream things true."
+Shakespeare,Romeo and Juliet,1:4:51-53,"I dream'd a dream to-night.—And so did I.— | Well, what was yours?—That dreamers often lie.— | In bed asleep, while they do dream things true."
 ```
 
 from which the plain text frontend generates the following output:
@@ -64,7 +64,7 @@ while the HTML frontend produces this:
 
 <head>
     <meta charset="utf-8">
-    <style>...</style>
+    <style></style>
 </head>
 
 <body>
