@@ -7,6 +7,7 @@
 * search quotes by author, source, content or any combination of them
 * output to (prettified) plain text
 * output to LaTeX
+* output to HTML 5 (with CSS)
 
 The list / database is a CSV file in the following format
 
@@ -33,7 +34,7 @@ Shakespeare,Romeo and Juliet,1:4:51-53,"I dream'd a dream to-night.—And so did
 from which the plain text frontend generates the following output:
 
 ```shell
-$ stack exec quote-db-exe -- -f [PATH] --plain -q 'a dream to-night'
+$ quote-db [PATH] --plain -q 'a dream'
 I dream'd a dream to-night.—And so did I.—
 Well, what was yours?—That dreamers often lie.—
 In bed asleep, while they do dream things true.
@@ -53,4 +54,36 @@ and the LaTeX frontend produces this output:
         \hspace*{\fill{}}(Shakespeare: \textit{Romeo and Juliet}, 1,4,51--53)
     \end{quote}
 \end{document}
+```
+
+while the HTML frontend produces this:
+
+```html
+<!DOCTYPE HTML>
+<html lang="de">
+
+<head>
+    <meta charset="utf-8">
+    <style>...</style>
+</head>
+
+<body>
+    <section>
+        <h1 class="author-head">Shakespeare</h1>
+        <article>
+            <div class="quote">
+                <blockquote>
+                    <p>I dream&#39;d a dream to-night.—And so did I.— / Well, what was yours?—That dreamers often lie.— / In bed asleep, while they do dream things true.</p>
+                </blockquote>
+                <cite>
+                    <span class="author">Shakespeare</span>
+                    <span class="source">Romeo and Juliet</span>
+                    <span class="location">1,4,51–53</span>
+                </cite>
+            </div>
+        </article>
+    </section>
+</body>
+
+</html>
 ```
