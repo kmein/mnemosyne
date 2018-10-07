@@ -1,5 +1,6 @@
-{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE ExtendedDefaultRules #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE QuasiQuotes #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 module QuoteDb.Html
   ( mkHtmlDocument
@@ -11,9 +12,11 @@ import QuoteDb.Util (groupOn, intersperseM_)
 
 import Control.Monad (forM_)
 import Data.Maybe (listToMaybe)
+import Hasmin (minifyCSS)
 import Lucid
 import qualified Data.Text as Text (Text, pack, splitOn)
 import qualified Data.Text.Lazy as Text (toStrict)
+import Text.RawString.QQ
 
 instance ToHtml Quote where
   toHtmlRaw = toHtml
@@ -73,4 +76,54 @@ mkHtmlDocument' css qs = do
         _ -> return ()
 
 defaultCss :: Text.Text
-defaultCss = ".author,.location{font-style:normal}body{margin:auto;max-width:700px;line-height:1.5;background-color:#444}.author::before{content:\"— \";color:grey}.author::after{content:\": \"}.location::before{content:\", \"}article+article::before{content:\"* * *\";color:grey;display:block;font-size:1.5em;text-align:center;padding-top:3%}section{color:#444;background-color:#fff;text-align:justify;text-justify:inter-word;padding:1% 5% 5%;margin:5%;-webkit-box-shadow:12px 12px 26px -9px rgba(0,0,0,.375);-moz-box-shadow:12px 12px 26px -9px rgba(0,0,0,.375);box-shadow:12px 12px 26px -9px rgba(0,0,0,.375)}section:hover{-webkit-box-shadow:12px 12px 26px -9px rgba(0,0,0,.75);-moz-box-shadow:12px 12px 26px -9px rgba(0,0,0,.75);box-shadow:12px 12px 26px -9px rgba(0,0,0,.75)}h1{text-align:center}h1::after,h1::before{content:\"—\";padding:0 8px;color:grey}h1 span.author-head{display:none}h1 span.translator-head::before{content:\"transl. \";font-style:italic;color:grey}"
+defaultCss = either error id $ minifyCSS [r|
+  .author, .location { font-style: normal }
+  body {
+    margin:auto;
+    max-width: 700px;
+    line-height: 1.5;
+    background-color: #444
+  }
+  .author::before {
+    content: "— ";
+    color: grey
+  }
+  .author::after { content: ":  " }
+  .location::before { content: ", " }
+  article+article::before {
+    content: "* * *";
+    color: grey;
+    display: block;
+    font-size: 1.5em;
+    text-align: center;
+    padding-top: 3%
+  }
+  section {
+    color: #444;
+    background-color: #fff;
+    text-align: justify;
+    text-justify: inter-word;
+    padding: 1% 5% 5%;
+    margin: 5%;
+    -webkit-box-shadow: 12px 12px 26px -9px rgba(0,0,0,.375);
+    -moz-box-shadow: 12px 12px 26px -9px rgba(0,0,0,.375);
+    box-shadow: 12px 12px 26px -9px rgba(0,0,0,.375)
+  }
+  section:hover {
+    -webkit-box-shadow: 12px 12px 26px -9px rgba(0,0,0,.75);
+    -moz-box-shadow: 12px 12px 26px -9px rgba(0,0,0,.75);
+    box-shadow: 12px 12px 26px -9px rgba(0,0,0,.75)
+  }
+  h1 { text-align:center }
+  h1::after, h1::before {
+    content: "—";
+    padding: 0 8px;
+    color: grey
+  }
+  h1 .author-head { display: none }
+  h1 .translator-head::before {
+    content: "transl. ";
+    font-style: italic;
+    color: grey
+  }
+|]

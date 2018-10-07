@@ -1,8 +1,8 @@
 { nixpkgs ? import <nixpkgs> {}, compiler ? "default", doBenchmark ? false }:
 let
   inherit (nixpkgs) pkgs;
-  f = { mkDerivation, base, bytestring, cassava, HaTeX, lucid, megaparsec
-      , optparse-applicative, prettyprinter, stdenv, text
+  f = { mkDerivation, base, bytestring, cassava, hasmin, HaTeX, lucid, megaparsec
+      , optparse-applicative, prettyprinter, raw-strings-qq, stdenv, text
       }:
       mkDerivation {
         pname = "quote-db";
@@ -11,7 +11,7 @@ let
         isLibrary = true;
         isExecutable = true;
         libraryHaskellDepends = [
-          base bytestring cassava HaTeX lucid megaparsec prettyprinter text
+          base bytestring cassava hasmin HaTeX lucid megaparsec prettyprinter raw-strings-qq text
         ];
         executableHaskellDepends = [ base optparse-applicative text ];
         testHaskellDepends = [ base ];

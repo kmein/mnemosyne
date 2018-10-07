@@ -26,9 +26,11 @@ library
                      , HaTeX
                      , bytestring
                      , cassava
+                     , hasmin
                      , lucid
                      , megaparsec
                      , prettyprinter
+                     , raw-strings-qq
                      , text
   default-language:    Haskell2010
 
