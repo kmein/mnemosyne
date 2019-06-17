@@ -1,7 +1,6 @@
 { mkDerivation, base, bytestring, cassava, hasmin, HaTeX, lucid
 , megaparsec, optparse-applicative, prettyprinter, raw-strings-qq
 , stdenv, text
-, fetchFromGitHub
 }:
 mkDerivation {
   pname = "quote-db";
