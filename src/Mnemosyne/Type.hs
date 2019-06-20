@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeFamilies #-}
 
-module QuoteDb.Type
+module Mnemosyne.Type
   ( Quote(..)
   , TextLoc(..)
   , Font

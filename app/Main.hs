@@ -4,7 +4,7 @@ module Main
   ( main
   ) where
 
-import QuoteDb
+import Mnemosyne
 
 import Data.List (nub, sort, intersect)
 import Data.Monoid ((<>))
@@ -31,7 +31,7 @@ data Search
   | SearchAuthors { pattern :: Text.Text }
   deriving (Show, Eq)
 
-data QuoteDbOptions = QuoteDbOptions
+data MnemosyneOptions = MnemosyneOptions
   { _dbFile :: FilePath
   , _outputType :: QuoteOutputType
   , _outputFont :: Maybe Font
@@ -39,9 +39,9 @@ data QuoteDbOptions = QuoteDbOptions
   , _queries :: Maybe [Search]
   } deriving (Show)
 
-quoteDbOptions :: Parser QuoteDbOptions
+quoteDbOptions :: Parser MnemosyneOptions
 quoteDbOptions =
-  QuoteDbOptions <$> quoteDbFile <*> quoteOutputType <*> quoteOutputFont <*>
+  MnemosyneOptions <$> quoteDbFile <*> quoteOutputType <*> quoteOutputFont <*>
   quoteOutputCss <*>
   quoteSearchDomain
   where
@@ -80,7 +80,7 @@ quoteDbOptions =
 
 main :: IO ()
 main = do
-  QuoteDbOptions csv ot font css queries <- execParser quoteDbOptions'
+  MnemosyneOptions csv ot font css queries <- execParser quoteDbOptions'
   quotes <- fileToQuotes csv
   let matching = maybe quotes (`searchQuotes` quotes) queries
   Text.putStrLn $

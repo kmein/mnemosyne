@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module QuoteDb.LaTeX
+module Mnemosyne.LaTeX
   ( mkLaTeXDocument
   ) where
 
-import QuoteDb.Type hiding (quote)
-import QuoteDb.Util (groupOn)
+import Mnemosyne.Type hiding (quote)
+import Mnemosyne.Util (groupOn)
 
 import Data.List (intersperse)
 import Data.Maybe (fromMaybe)

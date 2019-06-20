@@ -1,4 +1,4 @@
-module QuoteDb.Util where
+module Mnemosyne.Util where
 
 import Data.Function (on)
 import Data.List (groupBy)

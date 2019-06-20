@@ -3,8 +3,8 @@
 , stdenv, text
 }:
 mkDerivation {
-  pname = "quote-db";
-  version = "0.1.0.0";
+  pname = "mnemosyne";
+  version = "0.2.0";
   src = ./.;
   isLibrary = true;
   isExecutable = true;
@@ -14,7 +14,7 @@ mkDerivation {
   ];
   executableHaskellDepends = [ base optparse-applicative text ];
   testHaskellDepends = [ base ];
-  homepage = "https://github.com/kmein/quote-db#readme";
+  homepage = "https://github.com/kmein/mnemosyne#readme";
   description = "A tool for managing a database of literature quotes";
   license = stdenv.lib.licenses.mit;
 }

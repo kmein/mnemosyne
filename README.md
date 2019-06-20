@@ -1,9 +1,9 @@
-# quote-db
+# mnemosyne
 
-`quote-db` is a simple solution for all ye, who keep a list of favourite
+`mnemosyne` is a simple solution for all ye, who keep a list of favourite
 (literature / song lyric) quotations.
 
-`quote-db` can
+`mnemosyne` can
 * search quotes by author, source, content or any combination of them
 * output to (prettified) plain text
 * output to LaTeX
@@ -34,7 +34,7 @@ Shakespeare,Romeo and Juliet,1:4:51-53,"I dream'd a dream to-night.—And so did
 from which the plain text frontend generates the following output:
 
 ```shell
-$ quote-db [PATH] --plain -q 'a dream'
+$ mnemosyne [PATH] --plain -q 'a dream'
 I dream'd a dream to-night.—And so did I.—
 Well, what was yours?—That dreamers often lie.—
 In bed asleep, while they do dream things true.

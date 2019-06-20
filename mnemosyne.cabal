@@ -1,7 +1,7 @@
-name:                quote-db
-version:             0.1.0.0
+name:                mnemosyne
+version:             0.2.0
 synopsis:            A tool for managing a database of literature quotes
-homepage:            https://github.com/kmein/quote-db#readme
+homepage:            https://github.com/kmein/mnemosyne#readme
 license:             MIT
 license-file:        LICENSE
 author:              Kierán Meinhardt
@@ -14,13 +14,13 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     QuoteDb
-                     , QuoteDb.Csv
-                     , QuoteDb.Html
-                     , QuoteDb.LaTeX
-                     , QuoteDb.Plain
-                     , QuoteDb.Type
-                     , QuoteDb.Util
+  exposed-modules:     Mnemosyne
+                     , Mnemosyne.Csv
+                     , Mnemosyne.Html
+                     , Mnemosyne.LaTeX
+                     , Mnemosyne.Plain
+                     , Mnemosyne.Type
+                     , Mnemosyne.Util
   ghc-options:         -Wall -Werror -Wunused-imports
   build-depends:       base >= 4.7 && < 5
                      , HaTeX
@@ -34,25 +34,25 @@ library
                      , text
   default-language:    Haskell2010
 
-executable quote-db
+executable mnemosyne
   hs-source-dirs:      app
   main-is:             Main.hs
   ghc-options:         -Wall -Werror -Wunused-imports
   build-depends:       base
-                     , quote-db
+                     , mnemosyne
                      , optparse-applicative
                      , text
   default-language:    Haskell2010
 
-test-suite quote-db-test
+test-suite mnemosyne-test
   type:                exitcode-stdio-1.0
   hs-source-dirs:      test
   main-is:             Spec.hs
   build-depends:       base
-                     , quote-db
+                     , mnemosyne
   ghc-options:         -Wall -Werror -Wunused-imports
   default-language:    Haskell2010
 
 source-repository head
   type:     git
-  location: https://github.com/kmein/quote-db
+  location: https://github.com/kmein/mnemosyne

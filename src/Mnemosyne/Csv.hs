@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module QuoteDb.Csv
+module Mnemosyne.Csv
   ( fileToQuotes
   ) where
 
-import QuoteDb.Type
+import Mnemosyne.Type
 
 import Control.Monad (mzero)
 import Data.ByteString.Lazy (fromStrict)

@@ -1,11 +1,11 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
-module QuoteDb.Plain
+module Mnemosyne.Plain
   ( prettyQuote
   ) where
 
-import QuoteDb.Type
+import Mnemosyne.Type
 
 import Data.Text (Text)
 import Data.Text.Prettyprint.Doc

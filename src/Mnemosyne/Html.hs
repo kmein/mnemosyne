@@ -2,13 +2,13 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE QuasiQuotes #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
-module QuoteDb.Html
+module Mnemosyne.Html
   ( mkHtmlDocument
   ) where
 
 
-import QuoteDb.Type hiding (quote)
-import QuoteDb.Util (groupOn, intersperseM_)
+import Mnemosyne.Type hiding (quote)
+import Mnemosyne.Util (groupOn, intersperseM_)
 
 import Control.Monad (forM_)
 import Data.Maybe (listToMaybe)
