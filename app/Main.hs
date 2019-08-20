@@ -26,9 +26,9 @@ data QuoteOutputType
   deriving (Show)
 
 data Search
-  = SearchQuotes { pattern :: Text.Text }
-  | SearchSources { pattern :: Text.Text }
-  | SearchAuthors { pattern :: Text.Text }
+  = SearchQuotes Text.Text
+  | SearchSources Text.Text
+  | SearchAuthors Text.Text
   deriving (Show, Eq)
 
 data MnemosyneOptions = MnemosyneOptions
