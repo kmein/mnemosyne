@@ -5,6 +5,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - name: Get package list
+      run: cabal update
     - name: Install dependencies
       run: cabal install --only-dependencies --enable-tests
     - name: Build
